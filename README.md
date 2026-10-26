@@ -96,7 +96,7 @@ On Windows, `scripts/test-windows-interactive.ps1` runs the actual app’s tests
 Unregister-ScheduledTask -TaskName AutomaticMouseMover-Native-Test -Confirm:$false
 ```
 
-GitHub Actions builds both installers on every push. Tagged versions also publish the build artifacts and checksums.
+GitHub Actions builds both installers on every push. Release binaries are published after hardware validation, with checksums.
 
 ## Uninstall
 
