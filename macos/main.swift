@@ -2,8 +2,8 @@ import AppKit
 import ApplicationServices
 import ServiceManagement
 
-let repository = "https://github.com/SiymoAI/automatic-mouse-mover-native"
-let appVersion = "1.0.0"
+let repository = "https://github.com/SiymoAI/siymo-mouse-mover"
+let appVersion = "1.0.1"
 
 final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var statusItem: NSStatusItem!
@@ -40,12 +40,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         policy.interval = [30,60,120,300].contains(saved) ? Double(saved) : 60
         policy.setEnabled(defaults.object(forKey: "enabled") as? Bool ?? true, now: now)
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-        statusItem.button?.image = NSImage(systemSymbolName: "computermouse", accessibilityDescription: "Automatic Mouse Mover")
-        statusItem.button?.setAccessibilityLabel("Automatic Mouse Mover")
+        statusItem.button?.image = NSImage(systemSymbolName: "computermouse", accessibilityDescription: "SiymoAI Mouse Mover")
+        statusItem.button?.setAccessibilityLabel("SiymoAI Mouse Mover")
         menu.delegate = self
         menu.autoenablesItems = false
         stateItem.isEnabled = false; detailItem.isEnabled = false
-        menu.addItem(NSMenuItem(title: "Automatic Mouse Mover", action: nil, keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "SiymoAI Mouse Mover", action: nil, keyEquivalent: ""))
         menu.addItem(stateItem); menu.addItem(detailItem); menu.addItem(.separator())
         startItem = add("Start", #selector(start)); stopItem = add("Stop", #selector(stop))
         let interval = NSMenuItem(title: "Move after inactivity", action: nil, keyEquivalent: "")
@@ -58,7 +58,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         loginItem = add("Launch at login", #selector(toggleLogin))
         menu.addItem(.separator())
         permissionItem = add("Allow mouse movement…", #selector(showPermissions))
-        _ = add("About Automatic Mouse Mover…", #selector(showAbout))
+        _ = add("About SiymoAI Mouse Mover…", #selector(showAbout))
         menu.addItem(.separator()); _ = add("Quit", #selector(quit), key: "q")
         statusItem.menu = menu
         let center = NSWorkspace.shared.notificationCenter
@@ -124,7 +124,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         loginItem.state = SMAppService.mainApp.status == .enabled ? .on : .off
         permissionItem.isHidden = AXIsProcessTrusted()
         statusItem.button?.appearsDisabled = !policy.enabled
-        statusItem.button?.toolTip = "Automatic Mouse Mover — \(state)"
+        statusItem.button?.toolTip = "SiymoAI Mouse Mover — \(state)"
         writeDiagnostics(state: state)
     }
     @objc func start() { policy.setEnabled(true, now: now); defaults.set(true, forKey: "enabled"); lastMessage = "Waiting for inactivity"; refresh(); if !AXIsProcessTrusted() && !testing { showPermissions() } }
@@ -140,13 +140,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func showWindow(permission: Bool) {
         window?.close()
         let panel = NSWindow(contentRect: NSRect(x:0,y:0,width:460,height:360), styleMask: [.titled,.closable], backing: .buffered, defer: false)
-        panel.isReleasedWhenClosed = false; panel.title = permission ? "Allow mouse movement" : "Automatic Mouse Mover"; panel.center()
+        panel.isReleasedWhenClosed = false; panel.title = permission ? "Allow mouse movement" : "SiymoAI Mouse Mover"; panel.center()
         let content = NSStackView(); content.orientation = .vertical; content.alignment = .centerX; content.spacing = 16; content.translatesAutoresizingMaskIntoConstraints = false
         panel.contentView!.addSubview(content)
         NSLayoutConstraint.activate([content.leadingAnchor.constraint(equalTo: panel.contentView!.leadingAnchor, constant: 32), content.trailingAnchor.constraint(equalTo: panel.contentView!.trailingAnchor, constant: -32), content.centerYAnchor.constraint(equalTo: panel.contentView!.centerYAnchor)])
         let icon = NSImageView(image: NSImage(systemSymbolName: "computermouse", accessibilityDescription: nil)!); icon.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 40, weight: .regular); content.addArrangedSubview(icon)
-        let title = NSTextField(labelWithString: permission ? "One permission. Then you’re set." : "Automatic Mouse Mover"); title.font = .boldSystemFont(ofSize: 21); content.addArrangedSubview(title)
-        let text = NSTextField(wrappingLabelWithString: permission ? "Enable Automatic Mouse Mover in System Settings → Privacy & Security → Accessibility. This lets the app gently move your pointer after you stop using your Mac.\n\nThe app stays in your menu bar. It never records your screen or keystrokes." : "A quiet companion for your menu bar.\nMoves your pointer only after inactivity.\n\nVersion \(appVersion) · Apple Silicon native\nSiymoAI · Inspired by Prashant Gupta’s AMM\nNo accounts. No tracking. No network requests.")
+        let title = NSTextField(labelWithString: permission ? "One permission. Then you’re set." : "SiymoAI Mouse Mover"); title.font = .boldSystemFont(ofSize: 21); content.addArrangedSubview(title)
+        let text = NSTextField(wrappingLabelWithString: permission ? "Enable SiymoAI Mouse Mover in System Settings → Privacy & Security → Accessibility. This lets the app gently move your pointer after you stop using your Mac.\n\nThe app stays in your menu bar. It never records your screen or keystrokes." : "A quiet companion for your menu bar.\nMoves your pointer only after inactivity.\n\nVersion \(appVersion) · Apple Silicon native\nSiymoAI\nNo accounts. No tracking. No network requests.")
         text.alignment = .center; text.font = .systemFont(ofSize: 13); text.textColor = .secondaryLabelColor; content.addArrangedSubview(text)
         let button = NSButton(title: permission ? "Open Accessibility Settings" : "Source & Downloads", target: self, action: permission ? #selector(openAccessibility) : #selector(openSource)); button.bezelStyle = .rounded; content.addArrangedSubview(button)
         window = panel; panel.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true)
@@ -166,7 +166,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     func selfTest() {
         let previous = defaults.dictionaryRepresentation()
-        let originalEnabled = policy.enabled; let originalInterval = policy.interval
+        let previousEnabled = policy.enabled; let previousInterval = policy.interval
         menu.performActionForItem(at: menu.index(of: stopItem)); let stopOK = !policy.enabled && startItem.isEnabled && !stopItem.isEnabled
         menu.performActionForItem(at: menu.index(of: startItem))
         let startOK = policy.enabled && !startItem.isEnabled && stopItem.isEnabled
@@ -174,7 +174,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         sleeping = true; refresh(); let sleepOK = !available
         sleeping = false; sessionActive = false; refresh(); let inactiveOK = !available
         sessionActive = true
-        policy.interval = originalInterval; policy.setEnabled(originalEnabled, now: now)
+        policy.interval = previousInterval; policy.setEnabled(previousEnabled, now: now)
         for key in ["enabled","interval"] { if let value = previous[key] { defaults.set(value, forKey: key) } else { defaults.removeObject(forKey: key) } }
         let report: [String:Any] = ["passed":stopOK && startOK && intervalOK && sleepOK && inactiveOK,"stop":stopOK,"start":startOK,"interval":intervalOK,"sleep":sleepOK,"inactiveSession":inactiveOK,"menuBarOnly":NSApp.activationPolicy() == .accessory,"permission":AXIsProcessTrusted(),"architecture":"arm64"]
         if let diagnostics, let data = try? JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted,.sortedKeys]) { try? data.write(to: diagnostics, options:.atomic) }

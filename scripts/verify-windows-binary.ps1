@@ -1,4 +1,4 @@
-param([string]$Path = (Join-Path (Split-Path -Parent $PSScriptRoot) 'build\windows-x64\AutomaticMouseMover.exe'))
+param([string]$Path = (Join-Path (Split-Path -Parent $PSScriptRoot) 'build\windows-x64\SiymoMouseMover.exe'))
 $ErrorActionPreference = 'Stop'
 $bytes = [IO.File]::ReadAllBytes($Path)
 $pe = [BitConverter]::ToInt32($bytes, 0x3c)

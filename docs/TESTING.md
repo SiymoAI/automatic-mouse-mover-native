@@ -1,10 +1,6 @@
-# Validation for v1.0.0
+# Validation for v1.0.1
 
-Tested on 25 October 2026, using a real Apple Silicon Mac and a real Windows 11 x64 computer. The initial Windows development build used .NET 8; the release was rebuilt with **.NET 10 LTS** and the installed app’s interactive test suite was rerun successfully.
-
-## Original app
-
-Cloned `prashantgupta24/automatic-mouse-mover` with GitHub CLI. Inspected its tray controls, activity tracker, movement logic, and MIT license. Downloaded the upstream v1.3.0 `amm.x86.zip`, confirmed that its executable is **x86_64**, and ran it under Rosetta on the Apple Silicon Mac. Its log reported a successful pointer movement after the first 60-second inactivity interval.
+Validated on 26 October 2026, using a real Apple Silicon Mac and a real Windows 11 x64 computer. The Windows app bundles **.NET 10 LTS**. The v1.0.1 branding update was rebuilt and checked on both platforms; runtime behavior is unchanged.
 
 ## macOS arm64
 

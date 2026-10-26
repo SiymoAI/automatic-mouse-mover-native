@@ -1,4 +1,4 @@
-Automatic Mouse Mover is now available as a native **Apple Silicon menu bar app** and a **Windows x64 system tray app**.
+SiymoAI Mouse Mover is now available as a native **Apple Silicon menu bar app** and a **Windows x64 system tray app**.
 
 ### Downloads
 
@@ -14,12 +14,12 @@ Built with Apple AppKit / Core Graphics and Microsoft WinForms / Win32. No accou
 
 ### First launch
 
-**macOS 13+, Apple Silicon:** this build is ad hoc signed and **not Apple-notarized**. If blocked, use System Settings → Privacy & Security → Open Anyway after attempting to open the app. Enable **Automatic Mouse Mover** in **Privacy & Security → Accessibility** to allow pointer movement. The app detects the permission change automatically. Do not disable Gatekeeper.
+**macOS 13+, Apple Silicon:** this build is ad hoc signed and **not Apple-notarized**. If blocked, use System Settings → Privacy & Security → Open Anyway after attempting to open the app. Enable **SiymoAI Mouse Mover** in **Privacy & Security → Accessibility** to allow pointer movement. The app detects the permission change automatically. Do not disable Gatekeeper.
 
 **Windows 10/11, x64:** this build is **not Authenticode signed**, so SmartScreen may identify an unknown publisher. Verify the checksum and source. Windows may initially place the icon under **Show hidden icons** beside the clock.
 
 ### Validation
 
-Built and tested on real Apple Silicon macOS and Windows 11 x64 hardware, including actual pointer movement, idle timing, Start / Stop callbacks, interval persistence, screen boundaries, and installed app checks. See [the validation notes](https://github.com/SiymoAI/automatic-mouse-mover-native/blob/main/docs/TESTING.md) for scope and limitations. The separately launched Mac app still needs its own user-approved Accessibility permission.
+Built and tested on real Apple Silicon macOS and Windows 11 x64 hardware, including actual pointer movement, idle timing, Start / Stop callbacks, interval persistence, screen boundaries, and installed app checks. See [the validation notes](https://github.com/SiymoAI/siymo-mouse-mover/blob/main/docs/TESTING.md) for scope and limitations. The separately launched Mac app still needs its own user-approved Accessibility permission.
 
-Screenshots of the native Mac window and Windows tray controls are attached. MIT licensed, with credit to [Prashant Gupta’s original AMM](https://github.com/prashantgupta24/automatic-mouse-mover).
+Screenshots of the native Mac window and Windows tray controls are attached. Copyright © 2026 SiymoAI. MIT licensed.

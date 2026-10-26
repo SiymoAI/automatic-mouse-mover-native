@@ -1,6 +1,6 @@
-# Automatic Mouse Mover
+# SiymoAI Mouse Mover
 
-A small menu bar app for **Apple Silicon Macs** and a system tray app for **Windows x64**. Gently moves your pointer after inactivity, with the simple Start / Stop experience of [Prashant Gupta’s original AMM](https://github.com/prashantgupta24/automatic-mouse-mover).
+A small menu bar app for **Apple Silicon Macs** and a system tray app for **Windows x64**. Gently moves your pointer after inactivity, with simple Start / Stop controls.
 
 Built with AppKit / Core Graphics on macOS and WinForms / Win32 on Windows. No terminal windows, accounts, telemetry, browser engine, or background service. The Windows download includes its .NET runtime.
 
@@ -8,28 +8,28 @@ Built with AppKit / Core Graphics on macOS and WinForms / Win32 on Windows. No t
 
 | Platform | Installer | Alternative |
 | --- | --- | --- |
-| Apple Silicon · macOS 13+ | [Download DMG](https://github.com/SiymoAI/automatic-mouse-mover-native/releases/latest/download/Automatic-Mouse-Mover-1.0.0-macos-arm64.dmg) | [App ZIP](https://github.com/SiymoAI/automatic-mouse-mover-native/releases/latest/download/Automatic-Mouse-Mover-1.0.0-macos-arm64.zip) |
-| Windows 10/11 · x64 | [Download Setup](https://github.com/SiymoAI/automatic-mouse-mover-native/releases/latest/download/Automatic-Mouse-Mover-1.0.0-windows-x64-setup.exe) | [Portable ZIP](https://github.com/SiymoAI/automatic-mouse-mover-native/releases/latest/download/Automatic-Mouse-Mover-1.0.0-windows-x64-portable.zip) |
+| Apple Silicon · macOS 13+ | [Download DMG](https://github.com/SiymoAI/siymo-mouse-mover/releases/latest/download/SiymoAI-Mouse-Mover-1.0.1-macos-arm64.dmg) | [App ZIP](https://github.com/SiymoAI/siymo-mouse-mover/releases/latest/download/SiymoAI-Mouse-Mover-1.0.1-macos-arm64.zip) |
+| Windows 10/11 · x64 | [Download Setup](https://github.com/SiymoAI/siymo-mouse-mover/releases/latest/download/SiymoAI-Mouse-Mover-1.0.1-windows-x64-setup.exe) | [Portable ZIP](https://github.com/SiymoAI/siymo-mouse-mover/releases/latest/download/SiymoAI-Mouse-Mover-1.0.1-windows-x64-portable.zip) |
 
-[All releases, checksums, screenshots, and test results](https://github.com/SiymoAI/automatic-mouse-mover-native/releases/latest)
+[All releases, checksums, screenshots, and test results](https://github.com/SiymoAI/siymo-mouse-mover/releases/latest)
 
 ### macOS
 
-1. Open the DMG and drag **Automatic Mouse Mover** to **Applications**.
+1. Open the DMG and drag **SiymoAI Mouse Mover** to **Applications**.
 2. Open the app. Its mouse icon appears in the menu bar; there is no Dock icon.
 3. This release is ad hoc signed, **not Apple-notarized**. If macOS blocks the first launch, open **System Settings → Privacy & Security → Open Anyway** after attempting to open it. Do not disable Gatekeeper.
-4. From the mouse menu, choose **Allow mouse movement…**, then **Open Accessibility Settings**. Enable **Automatic Mouse Mover** under **Privacy & Security → Accessibility**.
+4. From the mouse menu, choose **Allow mouse movement…**, then **Open Accessibility Settings**. Enable **SiymoAI Mouse Mover** under **Privacy & Security → Accessibility**.
 5. The app detects permission changes automatically. Choose **Start** if it is stopped.
 
 No Screen Recording or Input Monitoring permission is required. The app reads elapsed time since input, never keystrokes or screen contents. An installed app needs its own Accessibility approval even if a development test launched from a trusted terminal already works.
 
 ### Windows
 
-1. Run **Automatic-Mouse-Mover-1.0.0-windows-x64-setup.exe**. It installs for your account without administrator privileges and adds a Start Menu shortcut and uninstaller.
-2. Launch **Automatic Mouse Mover** from Start. Its icon appears in the notification area beside the clock. Windows may initially put it under **Show hidden icons**; drag it into the visible tray if preferred.
+1. Run **SiymoAI-Mouse-Mover-1.0.1-windows-x64-setup.exe**. It installs for your account without administrator privileges and adds a Start Menu shortcut and uninstaller.
+2. Launch **SiymoAI Mouse Mover** from Start. Its icon appears in the notification area beside the clock. Windows may initially put it under **Show hidden icons**; drag it into the visible tray if preferred.
 3. Click or right-click the icon for **Start**, **Stop**, and settings. No console or permanent application window appears.
 
-The Windows app and installer are **not Authenticode signed**; Windows may show an unknown-publisher / SmartScreen warning. Verify the SHA-256 checksum and source before choosing to run it. No separately installed .NET runtime is needed. For portable use, extract the ZIP and open `AutomaticMouseMover.exe`.
+The Windows app and installer are **not Authenticode signed**; Windows may show an unknown-publisher / SmartScreen warning. Verify the SHA-256 checksum and source before choosing to run it. No separately installed .NET runtime is needed. For portable use, extract the ZIP and open `SiymoMouseMover.exe`.
 
 ## How it behaves
 
@@ -86,7 +86,7 @@ The preparation script downloads **Inno Setup 6.4.3** from its official release 
 
 ```sh
 # Run with the GUI app closed; saves control and policy checks.
-"build/Automatic Mouse Mover.app/Contents/MacOS/AutomaticMouseMover" \
+"build/SiymoAI Mouse Mover.app/Contents/MacOS/SiymoMouseMover" \
   --self-test --diagnostics "$PWD/build/macos-self-test.json"
 ```
 
@@ -95,7 +95,7 @@ An optional macOS OS-input test can be compiled from `tests/MacInputIntegration.
 On Windows, `scripts/test-windows-interactive.ps1` runs the actual app’s tests in the current signed-in user’s desktop through a temporary named scheduled task. A disconnected or locked desktop intentionally fails its movement assertion. The report and control screenshots go to `artifacts/`. Remove the test task afterward:
 
 ```powershell
-Unregister-ScheduledTask -TaskName AutomaticMouseMover-Native-Test -Confirm:$false
+Unregister-ScheduledTask -TaskName SiymoMouseMover-Native-Test -Confirm:$false
 ```
 
 GitHub Actions builds both installers on every push. Release binaries are published after hardware validation, with checksums.
@@ -104,8 +104,10 @@ GitHub Actions builds both installers on every push. Release binaries are publis
 
 **macOS:** Quit from the menu, turn off Launch at login if enabled, and move the app from Applications to Trash. Remove its Accessibility entry in System Settings if desired.
 
-**Windows:** Quit from the tray, then use **Settings → Apps → Installed apps → Automatic Mouse Mover → Uninstall**. The uninstaller removes the startup entry and shortcuts. Preferences remain in `%LOCALAPPDATA%\SiymoAI\AutomaticMouseMover` so reinstalls retain your choices; delete that folder if you want a clean reset.
+**Windows:** Quit from the tray, then use **Settings → Apps → Installed apps → SiymoAI Mouse Mover → Uninstall**. The uninstaller removes the startup entry and shortcuts. Preferences remain in `%LOCALAPPDATA%\SiymoAI\SiymoMouseMover` so reinstalls retain your choices; delete that folder if you want a clean reset.
 
-## Credits and license
+## License
 
-MIT licensed. This is an independent native reimplementation inspired by **Prashant Gupta’s Automatic Mouse Mover**. The original is Go-based; its latest v1.3.0 binary is Intel-only. Original credit and the MIT notice are retained in [LICENSE](LICENSE). macOS uses only Apple frameworks; Windows uses Microsoft .NET 10 LTS and Win32. Windows installers are built with Jordan Russell and Martijn Laan’s Inno Setup.
+Copyright © 2026 SiymoAI. Released under the [MIT License](LICENSE).
+
+The macOS app uses Apple frameworks; the Windows app uses Microsoft .NET 10 LTS and Win32. Windows installers are built with Inno Setup.

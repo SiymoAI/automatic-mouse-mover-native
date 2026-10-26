@@ -1,17 +1,17 @@
 using System.Reflection;
 using System.Text.Json;
 using Microsoft.Win32;
-namespace AutomaticMouseMover;
+namespace SiymoMouseMover;
 internal static class Program
 {
     [STAThread] private static void Main(string[] args) {
         ApplicationConfiguration.Initialize();
-        using var mutex = new Mutex(true, "Local\\SiymoAI.AutomaticMouseMover", out bool created);
+        using var mutex = new Mutex(true, "Local\\SiymoAI.MouseMover", out bool created);
         if (!created) return;
         try { using var context = new TrayApp(args); Application.Run(context); }
         catch (Exception e) {
             if (args.Contains("--self-test")) { var i = Array.IndexOf(args, "--self-test"); if (i + 1 < args.Length) File.WriteAllText(args[i+1], JsonSerializer.Serialize(new { passed = false, error = e.ToString() })); }
-            else MessageBox.Show("Automatic Mouse Mover could not start.\n\n" + e.Message, "Automatic Mouse Mover", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else MessageBox.Show("SiymoAI Mouse Mover could not start.\n\n" + e.Message, "SiymoAI Mouse Mover", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
@@ -35,12 +35,12 @@ internal sealed class TrayApp : ApplicationContext
     private readonly Icon appIcon;
     internal TrayApp(string[] args) {
         testing = args.Contains("--self-test");
-        settingsPath = testing ? Path.Combine(Path.GetTempPath(), "amm-tests-" + Guid.NewGuid(), "settings.json") : Settings.DefaultPath;
+        settingsPath = testing ? Path.Combine(Path.GetTempPath(), "siymo-mouse-tests-" + Guid.NewGuid(), "settings.json") : Settings.DefaultPath;
         int d = Array.IndexOf(args, "--diagnostics"); diagnostics = d >= 0 && args.Length > d + 1 ? args[d+1] : null;
         settings = Settings.Load(settingsPath); Policy.IntervalSeconds = settings.IntervalSeconds; Policy.SetEnabled(settings.Enabled, Environment.TickCount64);
-        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("AutomaticMouseMover.AppIcon.ico")!;
+        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SiymoMouseMover.AppIcon.ico")!;
         appIcon = new Icon(stream);
-        menu.Items.Add(new ToolStripMenuItem("Automatic Mouse Mover") { Enabled = false });
+        menu.Items.Add(new ToolStripMenuItem("SiymoAI Mouse Mover") { Enabled = false });
         state.Enabled = detail.Enabled = false; menu.Items.Add(state); menu.Items.Add(detail); menu.Items.Add(new ToolStripSeparator());
         start.Click += (_,_) => Start(); stop.Click += (_,_) => Stop(); menu.Items.Add(start); menu.Items.Add(stop);
         var interval = new ToolStripMenuItem("Move after inactivity");
@@ -49,9 +49,9 @@ internal sealed class TrayApp : ApplicationContext
             item.Click += (_,_) => SetInterval(seconds); interval.DropDownItems.Add(item); intervalItems.Add(item);
         }
         menu.Items.Add(interval); login.Click += (_,_) => ToggleLogin(); menu.Items.Add(login); menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add("About Automatic Mouse Mover…", null, (_,_) => ShowAbout()); menu.Items.Add(new ToolStripSeparator()); menu.Items.Add("Quit", null, (_,_) => ExitThread());
+        menu.Items.Add("About SiymoAI Mouse Mover…", null, (_,_) => ShowAbout()); menu.Items.Add(new ToolStripSeparator()); menu.Items.Add("Quit", null, (_,_) => ExitThread());
         menu.Opening += (_,_) => Refresh();
-        tray = new NotifyIcon { Icon = appIcon, Text = "Automatic Mouse Mover", ContextMenuStrip = menu, Visible = true };
+        tray = new NotifyIcon { Icon = appIcon, Text = "SiymoAI Mouse Mover", ContextMenuStrip = menu, Visible = true };
         tray.MouseClick += (_, e) => { if (e.Button == MouseButtons.Left) menu.Show(Cursor.Position); };
         tray.DoubleClick += (_,_) => ShowAbout();
         _ = dispatcher.Handle;
@@ -68,11 +68,11 @@ internal sealed class TrayApp : ApplicationContext
     internal void SetInterval(int seconds) { Policy.IntervalSeconds = seconds; settings.IntervalSeconds = seconds; Policy.Reset(Environment.TickCount64); Save(); Refresh(); }
     private void Save() { try { settings.Save(settingsPath); } catch (Exception e) when (e is IOException or UnauthorizedAccessException) { lastMessage = "Settings could not be saved"; } }
     private static bool LoginEnabled {
-        get { using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"); return key?.GetValue("SiymoAI.AutomaticMouseMover") as string == "\"" + Application.ExecutablePath + "\""; }
+        get { using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"); return key?.GetValue("SiymoAI.MouseMover") as string == "\"" + Application.ExecutablePath + "\""; }
     }
     private void ToggleLogin() {
-        try { using var key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"); if (LoginEnabled) key.DeleteValue("SiymoAI.AutomaticMouseMover", false); else key.SetValue("SiymoAI.AutomaticMouseMover", "\"" + Application.ExecutablePath + "\""); }
-        catch (Exception e) when (e is UnauthorizedAccessException or System.Security.SecurityException or IOException) { MessageBox.Show("Could not change launch at login.\n" + e.Message, "Automatic Mouse Mover"); }
+        try { using var key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"); if (LoginEnabled) key.DeleteValue("SiymoAI.MouseMover", false); else key.SetValue("SiymoAI.MouseMover", "\"" + Application.ExecutablePath + "\""); }
+        catch (Exception e) when (e is UnauthorizedAccessException or System.Security.SecurityException or IOException) { MessageBox.Show("Could not change launch at login.\n" + e.Message, "SiymoAI Mouse Mover"); }
         Refresh();
     }
     private void Tick() {
@@ -89,15 +89,15 @@ internal sealed class TrayApp : ApplicationContext
         string status = !Policy.Enabled ? "Stopped" : suspended || !Native.Available ? "Paused while screen is unavailable" : "Running · moves only when idle";
         state.Text = status; detail.Text = Policy.Enabled ? lastMessage : "Click Start to resume"; start.Enabled = !Policy.Enabled; stop.Enabled = Policy.Enabled;
         foreach (var item in intervalItems) item.Checked = (int)item.Tag! == Policy.IntervalSeconds;
-        login.Checked = LoginEnabled; tray.Text = "Automatic Mouse Mover — " + (Policy.Enabled ? "Running" : "Stopped");
-        if (diagnostics != null) File.WriteAllText(diagnostics, JsonSerializer.Serialize(new { version = "1.0.0", architecture = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString(), state = status, enabled = Policy.Enabled, moves, interval = Policy.IntervalSeconds, available = Native.Available, idleSeconds = Native.IdleSeconds, pid = Environment.ProcessId, session = System.Diagnostics.Process.GetCurrentProcess().SessionId, trayVisible = tray.Visible, mainWindow = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle.ToInt64() }, new JsonSerializerOptions { WriteIndented = true }));
+        login.Checked = LoginEnabled; tray.Text = "SiymoAI Mouse Mover — " + (Policy.Enabled ? "Running" : "Stopped");
+        if (diagnostics != null) File.WriteAllText(diagnostics, JsonSerializer.Serialize(new { version = "1.0.1", architecture = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString(), state = status, enabled = Policy.Enabled, moves, interval = Policy.IntervalSeconds, available = Native.Available, idleSeconds = Native.IdleSeconds, pid = Environment.ProcessId, session = System.Diagnostics.Process.GetCurrentProcess().SessionId, trayVisible = tray.Visible, mainWindow = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle.ToInt64() }, new JsonSerializerOptions { WriteIndented = true }));
     }
     private void ShowAbout() {
         if (about is { IsDisposed: false }) { about.Activate(); return; }
-        about = new Form { Text = "Automatic Mouse Mover", ClientSize = new Size(440,330), FormBorderStyle = FormBorderStyle.FixedDialog, MaximizeBox = false, MinimizeBox = false, StartPosition = FormStartPosition.CenterScreen, Icon = appIcon, BackColor = SystemColors.Window };
-        var title = new Label { Text = "Automatic Mouse Mover", Font = new Font("Segoe UI",20,FontStyle.Bold), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Top, Height = 85 };
-        var body = new Label { Text = "A quiet companion for your system tray.\nMoves your pointer only after inactivity.\n\nVersion 1.0.0 · Windows native\nSiymoAI · Inspired by Prashant Gupta’s AMM\n\nNo accounts. No tracking. No network requests.", Font = new Font("Segoe UI",11), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Top, Height = 175 };
-        var button = new Button { Text = "Source && Downloads", Width = 180, Height = 32, Top = 280, Left = 130 }; button.Click += (_,_) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("https://github.com/SiymoAI/automatic-mouse-mover-native") { UseShellExecute = true });
+        about = new Form { Text = "SiymoAI Mouse Mover", ClientSize = new Size(440,330), FormBorderStyle = FormBorderStyle.FixedDialog, MaximizeBox = false, MinimizeBox = false, StartPosition = FormStartPosition.CenterScreen, Icon = appIcon, BackColor = SystemColors.Window };
+        var title = new Label { Text = "SiymoAI Mouse Mover", Font = new Font("Segoe UI",20,FontStyle.Bold), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Top, Height = 85 };
+        var body = new Label { Text = "A quiet companion for your system tray.\nMoves your pointer only after inactivity.\n\nVersion 1.0.1 · Windows native\nSiymoAI\n\nNo accounts. No tracking. No network requests.", Font = new Font("Segoe UI",11), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Top, Height = 175 };
+        var button = new Button { Text = "Source && Downloads", Width = 180, Height = 32, Top = 280, Left = 130 }; button.Click += (_,_) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("https://github.com/SiymoAI/siymo-mouse-mover") { UseShellExecute = true });
         about.Controls.Add(body); about.Controls.Add(title); about.Controls.Add(button); about.Show();
     }
     protected override void ExitThreadCore() { timer.Stop(); tray.Visible = false; base.ExitThreadCore(); }

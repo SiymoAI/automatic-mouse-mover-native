@@ -7,10 +7,10 @@
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>AppIcon.ico</ApplicationIcon>
-    <AssemblyName>AutomaticMouseMover</AssemblyName>
-    <Product>Automatic Mouse Mover</Product>
+    <AssemblyName>SiymoMouseMover</AssemblyName>
+    <Product>SiymoAI Mouse Mover</Product>
     <Company>SiymoAI</Company>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Copyright>Copyright © 2026 SiymoAI. MIT License.</Copyright>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>

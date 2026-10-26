@@ -1,6 +1,6 @@
-Automatic Mouse Mover 1.0.0 - Windows x64
+SiymoAI Mouse Mover 1.0.1 - Windows x64
 
-Extract the entire ZIP, then double-click AutomaticMouseMover.exe.
+Extract the entire ZIP, then double-click SiymoMouseMover.exe.
 The app runs in the notification area beside the clock. Check Show hidden icons
 if you do not see it. Click or right-click the mouse icon for Start, Stop,
 inactivity intervals, optional Launch at login, About, and Quit.
@@ -15,7 +15,7 @@ choosing to run it if Windows displays an unknown-publisher warning.
 For a Start Menu shortcut and normal uninstaller, use the Setup EXE instead.
 
 Source, downloads, documentation, and MIT license:
-https://github.com/SiymoAI/automatic-mouse-mover-native
+https://github.com/SiymoAI/siymo-mouse-mover
 
 Copyright (c) 2026 SiymoAI
-Inspired by Prashant Gupta's original AMM. See LICENSE.txt.
+See LICENSE.txt for license terms.

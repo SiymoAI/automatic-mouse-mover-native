@@ -1,4 +1,4 @@
-namespace AutomaticMouseMover;
+namespace SiymoMouseMover;
 internal sealed class MoverPolicy
 {
     public int IntervalSeconds { get; set; } = 60;

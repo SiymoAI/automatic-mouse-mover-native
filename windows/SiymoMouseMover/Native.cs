@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-namespace AutomaticMouseMover;
+namespace SiymoMouseMover;
 internal static class Native
 {
     [StructLayout(LayoutKind.Sequential)] private struct LastInput { public uint Size, Time; }
