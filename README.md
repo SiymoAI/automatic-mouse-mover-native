@@ -90,6 +90,8 @@ The preparation script downloads **Inno Setup 6.4.3** from its official release 
   --self-test --diagnostics "$PWD/build/macos-self-test.json"
 ```
 
+An optional macOS OS-input test can be compiled from `tests/MacInputIntegration.swift` with `swiftc -parse-as-library`. It needs a trusted Accessibility host and posts only a Shift press/release while the app’s About window is focused; it verifies that keyboard input resets the real idle counter.
+
 On Windows, `scripts/test-windows-interactive.ps1` runs the actual app’s tests in the current signed-in user’s desktop through a temporary named scheduled task. A disconnected or locked desktop intentionally fails its movement assertion. The report and control screenshots go to `artifacts/`. Remove the test task afterward:
 
 ```powershell
