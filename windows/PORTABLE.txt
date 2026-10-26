@@ -1,0 +1,21 @@
+Automatic Mouse Mover 1.0.0 - Windows x64
+
+Extract the entire ZIP, then double-click AutomaticMouseMover.exe.
+The app runs in the notification area beside the clock. Check Show hidden icons
+if you do not see it. Click or right-click the mouse icon for Start, Stop,
+inactivity intervals, optional Launch at login, About, and Quit.
+
+The app is self-contained; you do not need to install .NET or open a terminal.
+The default interval is 60 seconds of inactivity. Movement pauses during
+clicks/dragging, while locked or sleeping, and in disconnected sessions.
+
+This build is not Authenticode signed. Verify the checksums and source before
+choosing to run it if Windows displays an unknown-publisher warning.
+
+For a Start Menu shortcut and normal uninstaller, use the Setup EXE instead.
+
+Source, downloads, documentation, and MIT license:
+https://github.com/SiymoAI/automatic-mouse-mover-native
+
+Copyright (c) 2026 SiymoAI
+Inspired by Prashant Gupta's original AMM. See LICENSE.txt.

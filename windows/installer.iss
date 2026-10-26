@@ -1,0 +1,38 @@
+#define AppName "Automatic Mouse Mover"
+#define AppVersion "1.0.0"
+[Setup]
+AppId={{C7C871C6-F16C-43D6-BD21-76B8BF1DAF77}
+AppName={#AppName}
+AppVersion={#AppVersion}
+AppPublisher=SiymoAI
+AppPublisherURL=https://github.com/SiymoAI/automatic-mouse-mover-native
+AppSupportURL=https://github.com/SiymoAI/automatic-mouse-mover-native/issues
+DefaultDirName={localappdata}\Programs\Automatic Mouse Mover
+DefaultGroupName={#AppName}
+DisableProgramGroupPage=yes
+PrivilegesRequired=lowest
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
+OutputDir=..\dist
+OutputBaseFilename=Automatic-Mouse-Mover-1.0.0-windows-x64-setup
+SetupIconFile=AutomaticMouseMover\AppIcon.ico
+UninstallDisplayIcon={app}\AutomaticMouseMover.exe
+Compression=lzma2
+SolidCompression=yes
+WizardStyle=modern
+CloseApplications=yes
+RestartApplications=no
+LicenseFile=..\LICENSE
+[Files]
+Source: "..\build\windows-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\LICENSE"; DestDir: "{app}"
+[Icons]
+Name: "{group}\{#AppName}"; Filename: "{app}\AutomaticMouseMover.exe"
+[Tasks]
+Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Shortcuts:"; Flags: unchecked
+[Icons]
+Name: "{autodesktop}\{#AppName}"; Filename: "{app}\AutomaticMouseMover.exe"; Tasks: desktopicon
+[Run]
+Filename: "{app}\AutomaticMouseMover.exe"; Description: "Launch {#AppName}"; Flags: nowait postinstall skipifsilent
+[Registry]
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueName: "SiymoAI.AutomaticMouseMover"; Flags: uninsdeletevalue

@@ -1,0 +1,9 @@
+.DS_Store
+build/
+dist/
+artifacts/
+**/bin/
+**/obj/
+*.user
+build-tools/
+innosetup-*.exe

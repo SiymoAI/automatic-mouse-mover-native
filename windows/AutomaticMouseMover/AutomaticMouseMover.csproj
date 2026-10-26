@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>AppIcon.ico</ApplicationIcon>
+    <AssemblyName>AutomaticMouseMover</AssemblyName>
+    <Product>Automatic Mouse Mover</Product>
+    <Company>SiymoAI</Company>
+    <Version>1.0.0</Version>
+    <Copyright>Copyright © 2026 SiymoAI. MIT License.</Copyright>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+  <ItemGroup><EmbeddedResource Include="AppIcon.ico" /></ItemGroup>
+</Project>
